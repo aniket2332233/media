@@ -5,64 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Button Moving</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            font-family: Arial, sans-serif;
             flex-direction: column;
+            overflow: hidden;
         }
-        .question-container {
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
             text-align: center;
         }
+
         button {
             margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 25px;
+            font-size: 20px;
             cursor: pointer;
+            border: 2px solid white;
+            background-color: transparent;
+            color: white;
+            transition: all 0.3s ease;
+            border-radius: 5px;
         }
+
         #no {
-            position: relative;
-            transition: all 0.5s ease;
-            z-index: 10;  /* Ensure it stays on top */
+            position: absolute;
+            z-index: 10;
         }
+
+        /* Disabled button styling */
         #no:disabled {
-            cursor: not-allowed; /* Make it look disabled */
-            opacity: 0.5; /* Make the button appear faded */
+            cursor: not-allowed;
+            opacity: 0.5;
         }
+
+        /* Style for "Yes" button */
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Animation for random button movement */
+        @keyframes moveRandom {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(calc(100vw - 300px)) translateY(calc(100vh - 100px)); }
+        }
+
     </style>
 </head>
 <body>
-    <div class="question-container">
-        <h1>Do you want to continue?</h1>
-        <button id="no">No</button>
-        <button onclick="window.location.href='final.html'">Yes</button>
-    </div>
+    <h1>Do you want to continue?</h1>
+    <button id="no" onclick="moveRandomEl(this)">No</button>
+    <button onclick="window.location.href='final.html'">Yes</button>
 
     <script>
         let noClicked = false;  // To track if "No" has been clicked
 
         // Function to move the "No" button to a random position
         function moveRandomEl(elm) {
-            elm.style.position = "absolute";  // Ensure absolute positioning
-            elm.style.top = Math.floor(Math.random() * 90) + 5 + "%";  // Random position vertically (between 5% and 95%)
-            elm.style.left = Math.floor(Math.random() * 90) + 5 + "%"; // Random position horizontally (between 5% and 95%)
+            if (noClicked) return;  // If "No" button has already been clicked, don't move it.
+
+            let maxX = window.innerWidth - elm.offsetWidth;
+            let maxY = window.innerHeight - elm.offsetHeight;
+
+            let randomX = Math.floor(Math.random() * maxX);
+            let randomY = Math.floor(Math.random() * maxY);
+
+            elm.style.position = "absolute";
+            elm.style.top = `${randomY}px`;
+            elm.style.left = `${randomX}px`;
+
+            elm.style.transition = "all 0.5s ease";  // Smooth transition
+
+            // After the first click, disable the button and stop responding to clicks
+            elm.addEventListener("click", function () {
+                if (!noClicked) {
+                    noClicked = true;
+                    elm.disabled = true;  // Disable the button after the first click
+                    elm.style.transition = "none"; // Stop the transition effect after disabling
+                    elm.style.opacity = 0.5; // Make the "No" button look faded when disabled
+                }
+            });
         }
 
-        // Function called when the "No" button is clicked
-        document.getElementById("no").addEventListener("click", function() {
-            if (!noClicked) {
-                noClicked = true;  // Mark that the "No" button has been clicked once
-                this.disabled = true;  // Disable the "No" button to prevent further clicks
-            }
-        });
-
-        // Move the "No" button when the mouse enters it (random movement)
+        // Prevent clicking the "No" button after it's been clicked and disabled
         document.getElementById("no").addEventListener("mouseenter", function () {
-            if (!this.disabled) {
-                moveRandomEl(this);  // Move the "No" button to a random position
+            if (!noClicked) {
+                moveRandomEl(this); // Keep moving the button while it's not clicked
             }
         });
     </script>
