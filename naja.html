@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+            .img {
+                margin-left: 5vw;
+                position: absolute;
+            }
+
+            .cg {
+                width: 30vw;
+                height: 30vh;
+            }
+
+            h2 {
+                font-size: clamp(30px, 7vw, 70px);
+                /* Font size scales with viewport width */
+                text-align: center;
+            }
+
+            h1 {
+                font-size: clamp(40px, 6vw, 60px);
+                /* Font size scales with viewport width */
+                text-align: center;
+                margin-top: 5vh;
+                /* Margin also adjusts with viewport height */
+            }
+
+            .me {
+                font-size: clamp(40px, 5vw, 50px);
+                /* Font size scales with viewport width */
+            }
+
+            div h1 {
+                text-align: center;
+                margin-top: 1vh;
+                /* Adjusts with viewport height */
+            }
+
+            div {
+                text-align: center;
+            }
+
+            div button {
+                font-size: clamp(30px, 4vw, 40px);
+                /* Font size scales with viewport width */
+                margin-top: 4vh;
+            }
+
+            #Yes {
+                margin-right: 15vw;
+            }
+
+            #No {
+                margin-left: 15vw;
+            }
+
+
+
+            /* Flying Hearts Animation */
+            .flying-heart {
+                position: absolute;
+                font-size: 2rem;
+                animation: flyHearts 10s linear infinite;
+                opacity: 1;
+            }
+
+            @keyframes flyHearts {
+                0% {
+                    transform: translateY(100vh);
+                    /* Start from the bottom */
+                    opacity: 1;
+                }
+
+                50% {
+                    transform: translateY(-50vh);
+                    /* Halfway up */
+                    opacity: 0.7;
+                }
+
+                100% {
+                    transform: translateY(-100vh);
+                    /* End at the top */
+                    opacity: 0;
+                }
+            }
+
+            /* Reverse flying hearts */
+            .flying-heart.reverse {
+                animation: flyHeartsReverse 10s linear infinite;
+            }
+
+            @keyframes flyHeartsReverse {
+                0% {
+                    transform: translateY(-100vh);
+                    /* Start from the top */
+                    opacity: 1;
+                }
+
+                50% {
+                    transform: translateY(50vh);
+                    /* Halfway down */
+                    opacity: 0.7;
+                }
+
+                100% {
+                    transform: translateY(100vh);
+                    /* End at the bottom */
+                    opacity: 0;
+                }
+            }
+
+            /* Random position generation for each heart */
+            .flying-heart {
+                top: calc(100vh * var(--random-top));
+                /* Random start top position */
+                left: calc(100vw * var(--random-left));
+                /* Random start left position */
+                animation-delay: calc(var(--random-delay) * 1s);
+                /* Delay for animation */
+            }
+
+            /* Button Styling */
+            #btn {
+                text-align: center;
+                margin-top: 50px;
+            }
+
+            #btn button {
+                font-size: clamp(30px, 4vw, 40px);
+                margin: 10px;
+                padding: 10px 20px;
+                cursor: pointer;
+                background-color: #ff66b2;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            /* Hover effects for buttons */
+            #btn button:hover {
+                background-color: #ff3385;
+                /* Darker pink on hover */
+                transform: scale(1.05);
+                /* Slight grow effect */
+            }
+
+            /* Button positioning */
+            #Yes {
+                margin-right: 15vw;
+            }
+
+            #No {
+                margin-left: 15vw;
+            }
+
+
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <divdiv class="img">
+        <img src="CUTEGIRL.jpg" alt="You" class="cg">
+        <img src="CUTEGIRL.jpg" alt="You" class="cg">
+        <img src="CUTEGIRL.jpg" alt="You" class="cg">
+        <h2>Aap K liYe yeH soB Kuch</h2>
+        <h2 class="me">Created By Me.</h2>
+        </div>
+        <div>
+
+            <img src="by.jpg" alt="You" class="cg">
+            <img src="by.jpg" alt="You" class="cg">
+            <img src="by.jpg" alt="You" class="cg">
+        </div>
+
+        <div>
+            <h1>Single Ho Kya?</h1>
+        </div>
+
+        <div id="btn">
+            <button id="Yes">Yes</button>
+            <button id="No">No</button>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div id="romantic-container">
+            <!-- Flying hearts in different positions -->
+            <div class="flying-heart" id="heart1">❤️</div>
+            <div class="flying-heart" id="heart2">❤️</div>
+            <div class="flying-heart" id="heart3">❤️</div>
+            <div class="flying-heart" id="heart4">❤️</div>
+            <div class="flying-heart" id="heart5">❤️</div>
+        </div>
+
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                function createHeart() {
+                    // Create a new heart element
+                    const heart = document.createElement("div");
+                    heart.classList.add("flying-heart");
+                    heart.innerHTML = "❤️"; // Heart symbol
+
+                    // Set random position and animation delay
+                    const top = Math.random() * 100; // Random percentage of screen height
+                    const left = Math.random() * 100; // Random percentage of screen width
+                    const delay = Math.random() * 5; // Random delay for animation
+
+                    // Apply inline styles for positioning and delay
+                    heart.style.setProperty('--random-top', top);
+                    heart.style.setProperty('--random-left', left);
+                    heart.style.setProperty('--random-delay', delay);
+
+                    // Randomly decide if the heart should move top to bottom or bottom to top
+                    if (Math.random() > 0.5) {
+                        heart.classList.add("reverse"); // For top to bottom movement
+                    }
+
+                    // Append heart to body
+                    document.body.appendChild(heart);
+
+                    // Remove heart after animation (10s) to keep DOM clean
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 10000); // Duration of animation
+                }
+
+                // Create 3-4 hearts every 2 seconds
+                setInterval(createHeart, 2000);
+            });
+
+        </script>
+</body>
+
+</html>
